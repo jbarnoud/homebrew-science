@@ -9,7 +9,7 @@ class Dssp < Formula
 
   def install
     # Create a make.config file that contains the configuration for boost
-    File.open('make.config', 'w') do |makeconf|  
+    File.open('make.config', 'w') do |makeconf|
         makeconf.puts "BOOST_LIB_SUFFIX = -mt"
         makeconf.puts "BOOST_LIB_DIR    = /usr/local/lib"
         makeconf.puts "BOOST_INC_DIR    = /usr/local/include"
@@ -21,7 +21,7 @@ class Dssp < Formula
 
     # The makefile ask for g++ as a compiler but that causes a error at link
     # time: ld: library not found for -lgcc_ext.10.5
-    system "make", "install", "DEST_DIR=#{prefix}", "MAN_DIR=#{man}/man1", "CXX=c++"
+    system "make", "install", "DEST_DIR=#{prefix}", "MAN_DIR=#{man1}", "CXX=c++"
   end
 
   test do
