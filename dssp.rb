@@ -9,15 +9,20 @@ class Dssp < Formula
 
   def install
     # Create a make.config file that contains the configuration for boost
+    boost_lib = Formula.factory('boost').opt_prefix / 'lib'
+    boost_include = Formula.factory('boost').opt_prefix / 'include'
     File.open('make.config', 'w') do |makeconf|
         makeconf.puts "BOOST_LIB_SUFFIX = -mt"
-        makeconf.puts "BOOST_LIB_DIR    = /usr/local/lib"
-        makeconf.puts "BOOST_INC_DIR    = /usr/local/include"
+        makeconf.puts "BOOST_LIB_DIR    = #{boost_lib}"
+        makeconf.puts "BOOST_INC_DIR    = #{boost_include}"
      end
 
     # There is no need for the build to be static and static build causes
     # an error: ld: library not found for -lcrt0.o
-    system "sed", "-i", "-e", "s/-static//g", "makefile"
+    # system "sed", "-i", "-e", "s/-static//g", "makefile"
+    inreplace 'makefile' do |s|
+          s.gsub! /-static/, ''
+    end
 
     # The makefile ask for g++ as a compiler but that causes a error at link
     # time: ld: library not found for -lgcc_ext.10.5
